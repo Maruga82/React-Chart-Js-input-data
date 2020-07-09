@@ -5,15 +5,20 @@ export default class Form extends Component {
     super(props);
     this.state = {};
   }
-
+  
   render() {
     return (
       <div>
+        <form onSubmit={this.props.handleChangeTitle}>
+          <input type="text" name="title" placeholder="titolo"/>
+          <button type="submit">Aggiungi titolo</button>
+        </form>
+        <br/>
         <form onSubmit={this.props.handleSubmit}>
-          <input type="text" name="label" placeholder="label" />
-          <br />
-          <input type="text" name="value" placeholder="valore" />
-          <br />
+          <input type="text" name="label" placeholder="label"/>
+          <br/>
+          <input type="text" name="value" placeholder="valore"/>
+          <br/>
           <button type="submit">Aggiungi</button>
         </form>
         <select
@@ -25,6 +30,8 @@ export default class Form extends Component {
           <option value="doughnut">Doughnut</option>
           <option value="bar">Bar</option>
           <option value="line">Line</option>
+          <option value="pie">Pie</option>
+          <option value="radar">Radar</option>
         </select>
       </div>
     );

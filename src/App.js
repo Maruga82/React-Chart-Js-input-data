@@ -12,7 +12,7 @@ export default class App extends Component {
       chartType: false
     };
   }
-
+  
   addData = e => {
     e.preventDefault();
     const label = e.target.querySelector('[name="label"]').value;
@@ -23,11 +23,12 @@ export default class App extends Component {
     this.setState({
       ...this.state,
       values,
-      labels
+      labels,
+      title: false
     });
     return false;
   };
-
+  
   setChartType = e => {
     const chartType = e.currentTarget.value;
     this.setState({
@@ -35,12 +36,26 @@ export default class App extends Component {
       chartType
     });
   };
-
+  
+  changeTitle = e => {
+    e.preventDefault();
+    const newTitle = e.target.querySelector('[name="title"]').value;
+    this.setState({
+      ...this.state,
+      title: newTitle
+    });
+    return false;
+  }
+  
   render() {
-    console.log(this.state.chartType);
     return (
       <div className="App">
-        <Form handleSubmit={this.addData} setChartType={this.setChartType} />
+        {this.state.title && <h1>{this.state.title}</h1>}
+        <br/>
+        <br/>
+        <Form handleSubmit={this.addData} setChartType={this.setChartType} handleChangeTitle={this.changeTitle}/>
+        <br/>
+        <br/>
         <Grafico
           labels={this.state.labels}
           values={this.state.values}

@@ -1,17 +1,13 @@
 import React, { Component } from "react";
-import { Doughnut, Line, Bar } from "react-chartjs-2";
+import ChartJS from 'chart.js';
 
 export default class Grafico extends Component {
   constructor(props) {
     super(props);
+    this.chart = React.createRef()
     this.state = {
-      chartTypes: {
-        donught: Doughnut,
-        line: Line,
-        bar: Bar
-      },
       chartData: {
-        labels: props.labels || [],
+        labels: [],
         datasets: [
           {
             label: "My First dataset",
@@ -32,15 +28,34 @@ export default class Grafico extends Component {
             pointHoverBorderWidth: 2,
             pointRadius: 1,
             pointHitRadius: 10,
-            data: props.values || []
+            data: []
           }
         ]
       }
     };
   }
-
+  
+  componentDidMount() {
+    const data = {
+      ...this.state.chartData,
+      labels: this.props.labels || [],
+      datasets: [{ ...this.state.chartData.datasets, data: this.props.values || [] }]
+    }
+    const chart = new ChartJS(this.chart.current, { type: this.props.chartType || 'pie', data })
+    this.setState({
+      ...this.state,
+      chart
+    })
+  }
+  
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.state.chart && this.props.chartType) {
+      this.state.chart.chart.config.type = this.props.chartType
+    }
+    this.state.chart.update();
+  }
+  
   render() {
-    const Chart = this.state.chartTypes[this.props.chartType];
-    return Chart ? <Chart data={this.state.chartData} /> : null;
+    return <canvas ref={this.chart}></canvas>
   }
 }
